@@ -25,6 +25,17 @@ export default function LoginPage() {
     }
 
     setLoading(true)
+
+    // Bypass auth for demo purposes if Supabase is not configured
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL.includes("placeholder")) {
+      console.warn("Supabase not configured. Bypassing auth for demo purposes.")
+      setTimeout(() => {
+        setStep("otp")
+        setLoading(false)
+      }, 800)
+      return
+    }
+
     try {
       const { error } = await supabase.auth.signInWithOtp({
         email,
@@ -36,13 +47,7 @@ export default function LoginPage() {
       if (error) throw error
       setStep("otp")
     } catch (err: any) {
-      // For local dev without env variables, we can bypass actual sending by stubbing success
-      if (err.message.includes("NEXT_PUBLIC_SUPABASE_URL")) {
-         console.warn("Supabase not configured. Bypassing auth for demo purposes.")
-         setStep("otp")
-      } else {
-         setError(err.message || "Failed to send OTP. Please try again.")
-      }
+      setError(err.message || "Failed to send OTP. Please try again.")
     } finally {
       setLoading(false)
     }
@@ -52,6 +57,15 @@ export default function LoginPage() {
     e.preventDefault()
     setError("")
     setLoading(true)
+
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL.includes("placeholder")) {
+      console.warn("Supabase not configured. Bypassing auth for demo purposes.")
+      setTimeout(() => {
+        window.location.href = "/onboarding"
+      }, 800)
+      return
+    }
+
     try {
       const { data, error } = await supabase.auth.verifyOtp({
         email,
@@ -63,12 +77,7 @@ export default function LoginPage() {
       // Navigate to onboarding or dashboard
       window.location.href = "/onboarding"
     } catch (err: any) {
-      if (err.message.includes("NEXT_PUBLIC_SUPABASE_URL")) {
-         console.warn("Supabase not configured. Bypassing auth for demo purposes.")
-         window.location.href = "/onboarding"
-      } else {
-         setError(err.message || "Invalid OTP. Please try again.")
-      }
+      setError(err.message || "Invalid OTP. Please try again.")
     } finally {
       setLoading(false)
     }
