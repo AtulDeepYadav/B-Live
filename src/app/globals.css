@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fdfcfc;
+  --foreground: #1a0f12;
+  
+  --primary: #8a1538; /* Maroon red */
+  --primary-foreground: #ffffff;
+  
+  --secondary: #ff4d85; /* Pink */
+  --secondary-foreground: #ffffff;
+  
+  --card: #ffffff;
+  --card-foreground: #1a0f12;
+  
+  --border: #e6d8db;
+}
+
+.dark {
+  --background: #11090a;
+  --foreground: #fdfcfc;
+  
+  --primary: #ff4d85; /* Bright Pink in dark mode for pop */
+  --primary-foreground: #ffffff;
+  
+  --secondary: #8a1538; /* Maroon */
+  --secondary-foreground: #ffffff;
+  
+  --card: #1c0e12;
+  --card-foreground: #fdfcfc;
+  
+  --border: #331f24;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-border: var(--border);
+  
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
